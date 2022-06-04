@@ -1,0 +1,27 @@
+{
+	"name": "ProdigyGameFilePatchGenerator",
+	"version": "1.0.0",
+	"description": "A repo for patching prodigy game files.",
+	"main": "dist/index.js",
+	"author": "hostedposted <hostedpostedsite@gmail.com>",
+	"scripts": {
+		"build": "tsc",
+		"generate-files": "node dist/index.js"
+	},
+	"license": "MIT",
+	"devDependencies": {
+		"@types/node-fetch": "2.5.8",
+		"@typescript-eslint/eslint-plugin": "^5.27.0",
+		"@typescript-eslint/parser": "^5.27.0",
+		"eslint": "8.0.1",
+		"eslint-config-standard": "^17.0.0",
+		"eslint-plugin-import": "2.25.2",
+		"eslint-plugin-n": "15.0.0",
+		"eslint-plugin-promise": "6.0.0",
+		"typescript": "^4.7.3"
+	},
+	"dependencies": {
+		"node-fetch": "2.6.1",
+		"prodigy-api": "^1.2.2"
+	}
+}
