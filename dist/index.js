@@ -51,7 +51,7 @@ var getGameVersion = function () { return __awaiter(void 0, void 0, void 0, func
     }
 }); }); };
 var main = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var version, gameFile, patches, patchedGameFile;
+    var version, gameFile, variables, patches, patchedGameFile;
     var _a;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -61,10 +61,11 @@ var main = function () { return __awaiter(void 0, void 0, void 0, function () {
                 return [4 /*yield*/, getGameFile(version)];
             case 2:
                 gameFile = _b.sent();
+                variables = [gameFile.match(/window,function\((.)/)[1], gameFile.match(/var (.)={}/)[1]];
                 patches = [
                     [
                         /s\),this\._game=(.)/,
-                        "s),this._game=$1;Object.defineProperty(window._, \"game\", {get: () => this._game, enumerable: true, configurable: true});Object.defineProperty(window._, \"instance\", {get: () => $1.instance, enumerable: true, configurable: true});Object.defineProperty(window._, \"player\", {get: () => window._.".concat((_a = gameFile.match(/instance.prodigy.gameContainer.get\("...-...."\).player/)) === null || _a === void 0 ? void 0 : _a[0], ", enumerable: true, configurable: true});Object.defineProperty(window._, \"gameData\", {get: () => $1.instance.game.state.states.get(\"Boot\")._gameData, enumerable: true, configurable: true});Object.defineProperty(window._, \"localizer\", {get: () => $1.instance.prodigy.gameContainer.get(\"LocalizationService\"), enumerable: true, configurable: true});Object.defineProperty(window._, \"network\", {get: () => window._.player.game.input.onDown._bindings[0].context, enumerable: true, configurable: true});")
+                        "s),this._game=$1;Object.defineProperty(window._, \"game\", {get: () => this._game, enumerable: true, configurable: true});Object.defineProperty(window._, \"instance\", {get: () => ".concat(variables[1], ".instance, enumerable: true, configurable: true});Object.defineProperty(window._, \"player\", {get: () => window._.").concat((_a = gameFile.match(/instance.prodigy.gameContainer.get\("...-...."\).player/)) === null || _a === void 0 ? void 0 : _a[0], ", enumerable: true, configurable: true});Object.defineProperty(window._, \"gameData\", {get: () => ").concat(variables[1], ".instance.game.state.states.get(\"Boot\")._gameData, enumerable: true, configurable: true});Object.defineProperty(window._, \"localizer\", {get: () => ").concat(variables[1], ".instance.prodigy.gameContainer.get(\"LocalizationService\"), enumerable: true, configurable: true});Object.defineProperty(window._, \"network\", {get: () => window._.player.game.input.onDown._bindings[0].context, enumerable: true, configurable: true});")
                     ],
                     [
                         /(.)\.constants=Object/,

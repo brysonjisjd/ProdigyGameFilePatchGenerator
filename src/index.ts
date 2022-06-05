@@ -12,10 +12,12 @@ const main = async () => {
 	const version = await getGameVersion();
 	const gameFile = await getGameFile(version);
 
+	const variables = [gameFile.match(/window,function\((.)/)![1], gameFile.match(/var (.)={}/)![1]] as string[];
+
 	const patches: Patches = [
 		[
 			/s\),this\._game=(.)/,
-			`s),this._game=$1;Object.defineProperty(window._, "game", {get: () => this._game, enumerable: true, configurable: true});Object.defineProperty(window._, "instance", {get: () => $1.instance, enumerable: true, configurable: true});Object.defineProperty(window._, "player", {get: () => window._.${gameFile.match(/instance.prodigy.gameContainer.get\("...-...."\).player/)?.[0]}, enumerable: true, configurable: true});Object.defineProperty(window._, "gameData", {get: () => $1.instance.game.state.states.get("Boot")._gameData, enumerable: true, configurable: true});Object.defineProperty(window._, "localizer", {get: () => $1.instance.prodigy.gameContainer.get("LocalizationService"), enumerable: true, configurable: true});Object.defineProperty(window._, "network", {get: () => window._.player.game.input.onDown._bindings[0].context, enumerable: true, configurable: true});`
+			`s),this._game=$1;Object.defineProperty(window._, "game", {get: () => this._game, enumerable: true, configurable: true});Object.defineProperty(window._, "instance", {get: () => ${variables![1]}.instance, enumerable: true, configurable: true});Object.defineProperty(window._, "player", {get: () => window._.${gameFile.match(/instance.prodigy.gameContainer.get\("...-...."\).player/)?.[0]}, enumerable: true, configurable: true});Object.defineProperty(window._, "gameData", {get: () => ${variables![1]}.instance.game.state.states.get("Boot")._gameData, enumerable: true, configurable: true});Object.defineProperty(window._, "localizer", {get: () => ${variables![1]}.instance.prodigy.gameContainer.get("LocalizationService"), enumerable: true, configurable: true});Object.defineProperty(window._, "network", {get: () => window._.player.game.input.onDown._bindings[0].context, enumerable: true, configurable: true});`
 		],
 		[
 			/(.)\.constants=Object/,
