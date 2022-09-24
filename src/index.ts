@@ -17,11 +17,11 @@ const main = async () => {
 	const patches: Patches = [
 		[
 			/s\),this\._game=(.)/,
-			`s),this._game=$1;Object.defineProperty(window._, "game", {get: () => this._game, enumerable: true, configurable: true});Object.defineProperty(window._, "instance", {get: () => ${variables![0]}.instance, enumerable: true, configurable: true});Object.defineProperty(window._, "player", {get: () => window._.${gameFile.match(/instance.prodigy.gameContainer.get\("...-...."\).player/)?.[0]}, enumerable: true, configurable: true});Object.defineProperty(window._, "gameData", {get: () => ${variables![0]}.instance.game.state.states.get("Boot")._gameData, enumerable: true, configurable: true});Object.defineProperty(window._, "localizer", {get: () => ${variables![0]}.instance.prodigy.gameContainer.get("LocalizationService"), enumerable: true, configurable: true});Object.defineProperty(window._, "network", {get: () => window._.player.game.input.onDown._bindings[0].context, enumerable: true, configurable: true});`
+			`s),this._game=$1;window.priorLodash = window._;Object.defineProperty(window.priorLodash, "game", {get: () => this._game, enumerable: true, configurable: true});Object.defineProperty(window.priorLodash, "instance", {get: () => ${variables![0]}.instance, enumerable: true, configurable: true});Object.defineProperty(window.priorLodash, "player", {get: () => window._.${gameFile.match(/instance.prodigy.gameContainer.get\("...-...."\).player/)?.[0]}, enumerable: true, configurable: true});Object.defineProperty(window.priorLodash, "gameData", {get: () => ${variables![0]}.instance.game.state.states.get("Boot")._gameData, enumerable: true, configurable: true});Object.defineProperty(window.priorLodash, "localizer", {get: () => ${variables![0]}.instance.prodigy.gameContainer.get("LocalizationService"), enumerable: true, configurable: true});Object.defineProperty(window.priorLodash, "network", {get: () => window._.player.game.input.onDown._bindings[0].context, enumerable: true, configurable: true});setInterval(() => {if(window.priorLodash!==window._){window._=priorLodash;}}, 100);`
 		],
 		[
 			/(.)\.constants=Object/,
-			"window._.constants=$1,$1.constants=Object"
+			"window.priorLodash = window.priorLodash || window._,window.priorLodash.constants=$1,$1.constants=Object"
 		]
 	];
 
