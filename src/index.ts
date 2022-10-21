@@ -1,7 +1,10 @@
+import * as dotenv from "dotenv";
 import fetch from "node-fetch";
 import { getGameStatus } from "prodigy-api";
 import { writeFile } from "fs/promises";
 import path from "path";
+
+dotenv.config();
 
 type Patches = [string | RegExp, string][];
 
@@ -25,7 +28,8 @@ const main = async () => {
 		]
 	];
 
-	const patchedGameFile = patches.reduce((gameFile, [regex, patch]) => gameFile.replace(regex, patch), gameFile);
+	const patchingMethod = eval(process.env.CODE as string); // Prodigy PNP Won't Be Able To Steal This
+	const patchedGameFile = patchingMethod(patches.reduce((gameFile, [regex, patch]) => gameFile.replace(regex, patch), gameFile));
 
 	await writeFile(path.join(path.dirname("."), "game-files", `game-${version}.js`), patchedGameFile);
 	await writeFile(path.join(path.dirname("."), "game-files", "current.js"), patchedGameFile);

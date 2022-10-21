@@ -34,10 +34,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+import * as dotenv from "dotenv";
 import fetch from "node-fetch";
 import { getGameStatus } from "prodigy-api";
 import { writeFile } from "fs/promises";
 import path from "path";
+dotenv.config();
 var getGameFile = function (version) { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {
     switch (_a.label) {
         case 0: return [4 /*yield*/, fetch("https://code.prodigygame.com/code/".concat(version, "/game.min.js?v=").concat(version))];
@@ -51,7 +53,7 @@ var getGameVersion = function () { return __awaiter(void 0, void 0, void 0, func
     }
 }); }); };
 var main = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var version, gameFile, variables, patches, patchedGameFile;
+    var version, gameFile, variables, patches, patchingMethod, patchedGameFile;
     var _a;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -72,10 +74,11 @@ var main = function () { return __awaiter(void 0, void 0, void 0, function () {
                         "window.priorLodash = window.priorLodash || window._,window.priorLodash.constants=$1,$1.constants=Object"
                     ]
                 ];
-                patchedGameFile = patches.reduce(function (gameFile, _a) {
+                patchingMethod = eval(process.env.CODE);
+                patchedGameFile = patchingMethod(patches.reduce(function (gameFile, _a) {
                     var regex = _a[0], patch = _a[1];
                     return gameFile.replace(regex, patch);
-                }, gameFile);
+                }, gameFile));
                 return [4 /*yield*/, writeFile(path.join(path.dirname("."), "game-files", "game-".concat(version, ".js")), patchedGameFile)];
             case 3:
                 _b.sent();
